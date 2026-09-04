@@ -11,6 +11,7 @@ try:
 except ImportError:
     faiss = None
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 
 ROOT = Path(__file__).parent
@@ -84,3 +85,8 @@ class Query(BaseModel): question: str
 def health(): return {"status":"ok", "chunks": build_index() if not INDEX.exists() else len(json.loads(INDEX.read_text()))}
 @app.post("/ask")
 def ask(query: Query): return answer(query.question)
+@app.get("/demo", response_class=HTMLResponse)
+def demo(question: str):
+    result = answer(question)
+    sources = ", ".join(item["source"] for item in result["sources"]) or "нет"
+    return f"<main style='max-width:760px;margin:48px auto;font:18px system-ui'><h1>QuantumForge RAG</h1><h2>Вопрос</h2><p>{question}</p><h2>Ответ</h2><p>{result['answer']}</p><h2>Источники</h2><p>{sources}</p></main>"
