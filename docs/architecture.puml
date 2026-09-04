@@ -1,0 +1,11 @@
+@startuml
+actor User
+User -> API: question
+API -> Guard: validate input
+Guard -> Index: safe retrieval
+Index --> API: chunks + metadata
+API -> Guard: filter chunks
+API --> User: answer with sources / "I don't know"
+docs -> Index: daily build_index.py
+Index -> logs: update and query logs
+@enduml
