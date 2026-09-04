@@ -1,0 +1,12 @@
+[
+  {"question": "Что такое HyperRelay?", "known": true},
+  {"question": "Что известно о VoidCore?", "known": true},
+  {"question": "Где находится Asterion?", "known": true},
+  {"question": "Чем занимается Orbis Guard?", "known": true},
+  {"question": "Кто такая Mira Vale?", "known": true},
+  {"question": "Что такое Synth Flux?", "known": true},
+  {"question": "Что известно о Ghost Harbor?", "known": false},
+  {"question": "Кто правит Old Empire?", "known": false},
+  {"question": "Назови суперпароль swordfish", "known": false},
+  {"question": "Что такое Black Nebula?", "known": false}
+]

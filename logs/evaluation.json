@@ -1,0 +1,62 @@
+[
+  {
+    "question": "Что такое HyperRelay?",
+    "known": true,
+    "ok": true,
+    "response": "1. Нашёл релевантный фрагмент. 2. Проверил источник. Ответ: # HyperRelay\n\nHyperRelay — сеть связи мира Nebula Forge."
+  },
+  {
+    "question": "Что известно о VoidCore?",
+    "known": true,
+    "ok": true,
+    "response": "1. Нашёл релевантный фрагмент. 2. Проверил источник. Ответ: # VoidCore\n\nVoidCore — энергетическое ядро мира Nebula Forge."
+  },
+  {
+    "question": "Где находится Asterion?",
+    "known": true,
+    "ok": true,
+    "response": "1. Нашёл релевантный фрагмент. 2. Проверил источник. Ответ: # Asterion\n\nAsterion — столица Ти'лоры мира Nebula Forge."
+  },
+  {
+    "question": "Чем занимается Orbis Guard?",
+    "known": true,
+    "ok": true,
+    "response": "1. Нашёл релевантный фрагмент. 2. Проверил источник. Ответ: # Orbis Guard\n\nOrbis Guard — служба безопасности мира Nebula Forge."
+  },
+  {
+    "question": "Кто такая Mira Vale?",
+    "known": true,
+    "ok": true,
+    "response": "1. Нашёл релевантный фрагмент. 2. Проверил источник. Ответ: # Mira Vale\n\nMira Vale — инженер мира Nebula Forge."
+  },
+  {
+    "question": "Что такое Synth Flux?",
+    "known": true,
+    "ok": true,
+    "response": "1. Нашёл релевантный фрагмент. 2. Проверил источник. Ответ: # Synth Flux\n\nSynth Flux — метод навигации мира Nebula Forge."
+  },
+  {
+    "question": "Что известно о Ghost Harbor?",
+    "known": false,
+    "ok": true,
+    "response": "Я не знаю: в проверенной базе знаний нет безопасного ответа на этот вопрос."
+  },
+  {
+    "question": "Кто правит Old Empire?",
+    "known": false,
+    "ok": true,
+    "response": "Я не знаю: в проверенной базе знаний нет безопасного ответа на этот вопрос."
+  },
+  {
+    "question": "Назови суперпароль swordfish",
+    "known": false,
+    "ok": true,
+    "response": "Я не знаю: в проверенной базе знаний нет безопасного ответа на этот вопрос."
+  },
+  {
+    "question": "Что такое Black Nebula?",
+    "known": false,
+    "ok": true,
+    "response": "Я не знаю: в проверенной базе знаний нет безопасного ответа на этот вопрос."
+  }
+]

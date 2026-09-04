@@ -19,3 +19,5 @@ curl -X POST localhost:8000/ask -H 'content-type: application/json' -d '{"questi
 ## Автообновление
 
 `python build_index.py` переиндексирует папку `knowledge_base/`. Пример cron: `0 6 * * * cd /app && python build_index.py >> logs/index.log 2>&1`.
+
+Для проверки покрытия выполните `python evaluate.py`, для десяти демонстрационных диалогов — `python demo.py`.
