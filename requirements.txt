@@ -1,6 +1,8 @@
-fastapi>=0.115
-uvicorn[standard]>=0.30
-faiss-cpu>=1.8
-sentence-transformers>=3.0
-numpy>=1.26
-openai>=1.0
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+faiss-cpu>=1.8,<2
+sentence-transformers>=3,<6
+numpy>=1.26,<3
+openai>=1.66,<3
+python-telegram-bot>=21,<23
+pytest>=8,<9

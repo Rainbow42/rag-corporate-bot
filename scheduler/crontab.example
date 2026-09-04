@@ -1,2 +1,0 @@
-# Daily indexing at 06:00; output remains available for audit.
-0 6 * * * cd /app && /app/.venv/bin/python update_index.py >> /app/logs/index.log 2>&1

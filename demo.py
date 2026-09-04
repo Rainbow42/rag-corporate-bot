@@ -1,12 +1,15 @@
-"""Запускает десять демонстрационных диалогов и сохраняет текстовые доказательства."""
 from pathlib import Path
-from app import answer, build_index
 
-build_index()
-questions = [x["question"] for x in __import__("json").loads(Path("golden_questions.json").read_text())]
-lines = []
-for number, question in enumerate(questions, 1):
-    result = answer(question)
-    lines.append(f"## {number}. {question}\n\n{result['answer']}\n\nИсточники: {', '.join(x['source'] for x in result['sources']) or 'нет'}\n")
-Path("docs/demo_results.md").write_text("\n".join(lines), encoding="utf-8")
-print("saved docs/demo_results.md")
+from rag_core import ROOT, create_service
+
+
+if __name__ == "__main__":
+    service = create_service()
+    questions = [item["question"] for item in __import__("json").loads((ROOT / "golden_questions.json").read_text())]
+    lines = []
+    for number, question in enumerate(questions[:10], 1):
+        result = service.ask(question)
+        sources = ", ".join(result["sources"]) or "нет"
+        lines.append(f"## {number}. {question}\n\n{result['answer']}\n\nИсточники: {sources}\n")
+    Path("docs/demo_results.md").write_text("\n".join(lines), encoding="utf-8")
+    print("saved docs/demo_results.md")

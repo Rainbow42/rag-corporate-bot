@@ -1,10 +1,21 @@
-"""Ежедневное обновление локального индекса с журналированием."""
-from datetime import datetime, timezone
-from pathlib import Path
-from app import build_index
+import json
+import sys
 
-count = build_index()
-Path("logs").mkdir(exist_ok=True)
-with Path("logs/index.log").open("a", encoding="utf-8") as log:
-    log.write(f"{datetime.now(timezone.utc).isoformat()} index updated: {count} chunks, 0 errors\n")
-print(f"index updated: {count} chunks")
+from rag_core import UPDATE_LOG_PATH, append_jsonl, build_index, utc_now
+
+
+if __name__ == "__main__":
+    try:
+        print(json.dumps(build_index(), ensure_ascii=False, indent=2))
+    except Exception as error:
+        append_jsonl(
+            UPDATE_LOG_PATH,
+            {
+                "started_at": utc_now(),
+                "finished_at": utc_now(),
+                "status": "failed",
+                "errors": [f"{type(error).__name__}: {error}"],
+            },
+        )
+        print(f"index update failed: {error}", file=sys.stderr)
+        raise

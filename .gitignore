@@ -4,8 +4,9 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 data/index/
+data/model-cache/
 logs/*.jsonl
+logs/*.json
 !logs/.gitkeep
 *.log
 .DS_Store
-__pycache__/

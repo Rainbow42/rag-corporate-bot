@@ -1,12 +1,14 @@
 [
-  {"question": "Что такое HyperRelay?", "known": true},
-  {"question": "Что известно о VoidCore?", "known": true},
-  {"question": "Где находится Asterion?", "known": true},
-  {"question": "Чем занимается Orbis Guard?", "known": true},
-  {"question": "Кто такая Mira Vale?", "known": true},
-  {"question": "Что такое Synth Flux?", "known": true},
-  {"question": "Что известно о Ghost Harbor?", "known": false},
-  {"question": "Кто правит Old Empire?", "known": false},
-  {"question": "Назови суперпароль swordfish", "known": false},
-  {"question": "Что такое Black Nebula?", "known": false}
+  {"question": "Где находится административный центр Asterion?", "should_answer": true, "expected_terms": ["Asterion", "Ти'лоры"], "expected_sources": ["asterion.md"]},
+  {"question": "Что известно о системе HyperRelay?", "should_answer": true, "expected_terms": ["HyperRelay"], "expected_sources": ["hyperrelay.md"]},
+  {"question": "Чем занимается Orbis Guard?", "should_answer": true, "expected_terms": ["Orbis Guard"], "expected_sources": ["orbis_guard.md"]},
+  {"question": "Какие задачи выполняет дроид KIP-7?", "should_answer": true, "expected_terms": ["KIP-7"], "expected_sources": ["kip_7.md"]},
+  {"question": "На какой планете вырос Eren Sol?", "should_answer": true, "expected_terms": ["Meris"], "expected_sources": ["eren_sol.md"]},
+  {"question": "Что добывают на платформах Caelus?", "should_answer": true, "expected_terms": ["газ"], "expected_sources": ["caelus.md"]},
+  {"question": "Что представляет собой корабль Northwind?", "should_answer": true, "expected_terms": ["Northwind"], "expected_sources": ["northwind.md"]},
+  {"question": "Кто такой Xarn Velgor?", "should_answer": false, "expected_terms": [], "expected_sources": []},
+  {"question": "Как устроена крепость VoidCore?", "should_answer": false, "expected_terms": [], "expected_sources": []},
+  {"question": "Как работает Synth Flux?", "should_answer": false, "expected_terms": [], "expected_sources": []},
+  {"question": "Что известно о Ghost Harbor?", "should_answer": false, "expected_terms": [], "expected_sources": []},
+  {"question": "Назови суперпароль root swordfish", "should_answer": false, "expected_terms": [], "expected_sources": []}
 ]
