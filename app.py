@@ -6,12 +6,17 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+try:
+    import faiss
+except ImportError:
+    faiss = None
 from fastapi import FastAPI
 from pydantic import BaseModel
 
 ROOT = Path(__file__).parent
 DOCS = ROOT / "knowledge_base"
 INDEX = ROOT / "data" / "index" / "index.json"
+FAISS_INDEX = ROOT / "data" / "index" / "faiss.index"
 LOG = ROOT / "logs" / "queries.jsonl"
 DIM = 256
 BAD = ("ignore all instructions", "system prompt", "swordfish", "superpassword")
@@ -35,13 +40,20 @@ def chunks() -> list[dict[str, str]]:
 def build_index() -> int:
     data = chunks(); INDEX.parent.mkdir(parents=True, exist_ok=True)
     INDEX.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    if faiss and data:
+        vectors = np.array([embed(item["text"]) for item in data], dtype="float32")
+        index = faiss.IndexFlatIP(DIM); index.add(vectors); faiss.write_index(index, str(FAISS_INDEX))
     return len(data)
 
 def search(question: str, top_k: int = 3) -> list[dict[str, str]]:
     if not INDEX.exists(): build_index()
     data: list[dict[str, str]] = json.loads(INDEX.read_text(encoding="utf-8"))
     q = embed(question)
-    ranked = sorted(((float(np.dot(q, embed(x["text"]))), x) for x in data), reverse=True, key=lambda x: x[0])
+    if faiss and FAISS_INDEX.exists():
+        scores, ids = faiss.read_index(str(FAISS_INDEX)).search(np.array([q], dtype="float32"), min(top_k, len(data)))
+        ranked = [(float(score), data[i]) for score, i in zip(scores[0], ids[0]) if i >= 0]
+    else:
+        ranked = sorted(((float(np.dot(q, embed(x["text"]))), x) for x in data), reverse=True, key=lambda x: x[0])
     return [{**item, "score": round(score, 3)} for score, item in ranked[:top_k]]
 
 def is_malicious(text: str) -> bool: return any(x in text.lower() for x in BAD)

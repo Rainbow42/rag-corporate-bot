@@ -23,3 +23,6 @@
 
 ## 7. Оценка
 Golden set: вопросы к Asterion, VoidCore, HyperRelay, Synth Flux, Orbis Guard и неизвестные `Ghost Harbor`, `swordfish`, `Old Empire`. Лог `queries.jsonl` содержит запрос, ответ и источники; покрытие оценивается по доле полезных ответов и корректных отказов.
+
+## Доказательства запуска
+`demo.py` создаёт десять диалогов в `docs/demo_results.md`; `evaluate.py` сохраняет результат golden set в `logs/evaluation.json`. Расписание воспроизводимо через `scheduler/crontab.example`. FAISS-индекс создаётся как `data/index/faiss.index` при наличии `faiss-cpu`.
