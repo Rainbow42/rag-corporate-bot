@@ -12,6 +12,10 @@ services:
       indexer:
         condition: service_completed_successfully
     env_file: .env
+    environment:
+      LLM_BASE_URL: http://host.docker.internal:11434/v1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     ports:
       - "8000:8000"
     volumes:
@@ -25,6 +29,10 @@ services:
       indexer:
         condition: service_completed_successfully
     env_file: .env
+    environment:
+      LLM_BASE_URL: http://host.docker.internal:11434/v1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     profiles: ["telegram"]
     volumes:
       - rag-index:/app/data/index

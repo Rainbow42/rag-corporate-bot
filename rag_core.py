@@ -24,6 +24,8 @@ MANIFEST_PATH = INDEX_DIR / "manifest.json"
 QUERY_LOG_PATH = ROOT / "logs" / "queries.jsonl"
 UPDATE_LOG_PATH = ROOT / "logs" / "index_updates.jsonl"
 DEFAULT_EMBEDDING_MODEL = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+DEFAULT_LLM_BASE_URL = "http://localhost:11434/v1"
+DEFAULT_LLM_MODEL = "qwen2.5:3b"
 
 
 @dataclass(frozen=True)
@@ -69,19 +71,26 @@ class SentenceTransformerEmbedder:
         )
 
 
-class OpenAILLM:
+class OllamaLLM:
     def __init__(self, model: str | None = None) -> None:
         from openai import OpenAI
 
-        self._client = OpenAI()
-        self._model = model or os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
+        self._client = OpenAI(
+            base_url=os.getenv("LLM_BASE_URL", DEFAULT_LLM_BASE_URL),
+            api_key=os.getenv("LLM_API_KEY", "ollama"),
+        )
+        self._model = model or os.getenv("LLM_MODEL", DEFAULT_LLM_MODEL)
 
     def answer(self, system_prompt: str, user_prompt: str) -> str:
-        return self._client.responses.create(
+        response = self._client.chat.completions.create(
             model=self._model,
-            instructions=system_prompt,
-            input=user_prompt,
-        ).output_text
+            temperature=0,
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        )
+        return response.choices[0].message.content or ""
 
 
 def utc_now() -> str:
@@ -307,7 +316,7 @@ def create_service() -> RAGService:
         build_index(embedder, force=True)
     store = VectorStore(embedder)
     protection_enabled = os.getenv("PROTECTION_MODE", "on").lower() != "off"
-    return RAGService(store, OpenAILLM(), protection_enabled=protection_enabled)
+    return RAGService(store, OllamaLLM(), protection_enabled=protection_enabled)
 
 
 def render_demo(result: dict[str, object]) -> str:
