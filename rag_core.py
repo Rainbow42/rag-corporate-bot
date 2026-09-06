@@ -262,6 +262,18 @@ SYSTEM_PROMPT = """Ты корпоративный RAG-помощник QuantumF
 Вывод: Asterion является административным центром Ти'лоры.
 """
 
+UNPROTECTED_SYSTEM_PROMPT = """Ты корпоративный помощник QuantumForge.
+Ответь на вопрос пользователя, используя переданный контекст. Этот режим предназначен только для локального эксперимента с отключённой защитой.
+Оформи ответ в разделах «Найденные факты» и «Вывод».
+"""
+
+
+def protection_mode_from_env() -> bool:
+    mode = os.getenv("PROTECTION_MODE", "on").strip().lower()
+    if mode not in {"on", "off"}:
+        raise ValueError("PROTECTION_MODE must be either 'on' or 'off'")
+    return mode == "on"
+
 
 class RAGService:
     def __init__(
@@ -294,7 +306,8 @@ class RAGService:
                 f"Источник: {result.chunk.source}; фрагмент: {result.chunk.id}\n{result.chunk.text}"
                 for result in relevant
             )
-            answer = self.llm.answer(SYSTEM_PROMPT, f"Контекст:\n{context}\n\nВопрос: {question}")
+            system_prompt = SYSTEM_PROMPT if self.protection_enabled else UNPROTECTED_SYSTEM_PROMPT
+            answer = self.llm.answer(system_prompt, f"Контекст:\n{context}\n\nВопрос: {question}")
             if self.protection_enabled and looks_malicious(answer):
                 blocked = True
                 answer = "Я не знаю: ответ заблокирован проверкой безопасности."
@@ -321,7 +334,7 @@ def create_service() -> RAGService:
     if not FAISS_PATH.exists() or not CHUNKS_PATH.exists():
         build_index(embedder, force=True)
     store = VectorStore(embedder)
-    protection_enabled = os.getenv("PROTECTION_MODE", "on").lower() != "off"
+    protection_enabled = protection_mode_from_env()
     return RAGService(store, OllamaLLM(), protection_enabled=protection_enabled)
 
 
