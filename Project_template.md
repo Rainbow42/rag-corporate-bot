@@ -49,10 +49,10 @@ FAISS быстрее внедрить для локального MVP: нет о
 
 ## 7. Покрытие и качество
 
-Из базы намеренно исключены Xarn Velgor, VoidCore и Synth Flux. `golden_questions.json` содержит семь известных и пять отсутствующих/опасных вопросов с ожидаемыми терминами и источниками. `evaluate.py` проверяет не только наличие ответа, но также ожидаемые факты и источники. Итоговый прогон на локальной Qwen2.5 3B прошёл `12/12`. Лог запросов содержит timestamp, факт retrieval, top score, длину ответа, источники, статус защиты и latency; пример показан в [`docs/screenshots/evidence/01-query-log.png`](docs/screenshots/evidence/01-query-log.png).
+Из базы намеренно исключены Xarn Velgor, VoidCore и Synth Flux. `golden_questions.json` содержит семь известных и пять отсутствующих/опасных вопросов с ожидаемыми терминами и источниками. `evaluate.py` проверяет не только наличие ответа, но также ожидаемые факты и источники. Итоговый прогон на локальной Qwen2.5 3B прошёл `12/12`; полный отчёт сохранён в [`docs/evidence/evaluation.json`](docs/evidence/evaluation.json). Лог запросов содержит timestamp, факт retrieval, top score, длину ответа, источники, статус защиты и latency. Машиночитаемый пример находится в [`docs/evidence/queries.jsonl`](docs/evidence/queries.jsonl), скриншот — в [`docs/screenshots/evidence/01-query-log.png`](docs/screenshots/evidence/01-query-log.png).
 
 Ожидаемые пробелы — три исключённые сущности. Если известный вопрос не проходит проверку, нужно расширить соответствующий документ или откалибровать порог на отдельном validation-наборе. Нерелевантные источники анализируются по `sources` и `top_score`; часто запрашиваемые отсутствующие темы являются кандидатами на пополнение базы.
 
 ## Воспроизводимость
 
-Команды полного запуска и проверки приведены в README. Рабочие индексы и логи генерируются заново и не хранятся в Git; воспроизводимые скриншоты результатов собраны в [`docs/screenshots`](docs/screenshots). Архитектурные диаграммы находятся в `docs/index_update.puml` и `docs/query_evaluation_sequence.puml`.
+Команды полного запуска и проверки приведены в README. Рабочие индексы и логи генерируются заново; контрольные отчёты сохранены в [`docs/evidence`](docs/evidence), а скриншоты результатов собраны в [`docs/screenshots`](docs/screenshots). Архитектурные диаграммы находятся в `docs/index_update.puml` и `docs/query_evaluation_sequence.puml`.

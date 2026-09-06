@@ -2,7 +2,7 @@
 
 Корпоративный RAG-бот для синтетической базы знаний Nebula Forge. Учебный стенд использует multilingual SentenceTransformer, FAISS и локальную Qwen2.5 3B через Ollama. Доступны REST API и Telegram-интерфейс.
 
-Результаты демонстрации, пять успешных ответов, пять корректных отказов, эксперимент с prompt injection и проверка обновления индекса собраны в [`docs/screenshots`](docs/screenshots/README.md). Ответы на все пункты проектной работы приведены в [`Project_template.md`](Project_template.md).
+Результаты демонстрации, пять успешных ответов, пять корректных отказов, эксперимент с prompt injection и проверка обновления индекса собраны в [`docs/screenshots`](docs/screenshots/README.md). Машиночитаемые журналы контрольного прогона находятся в [`docs/evidence`](docs/evidence). Ответы на все пункты проектной работы приведены в [`Project_template.md`](Project_template.md).
 
 ## Быстрый запуск
 
