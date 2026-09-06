@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from rag_core import ROOT, create_service, utc_now
+from rag_core import ROOT, create_service, is_refusal, utc_now
 
 
 def evaluate() -> dict[str, object]:
@@ -13,7 +13,7 @@ def evaluate() -> dict[str, object]:
     for test in tests:
         response = service.ask(test["question"])
         answer = str(response["answer"])
-        refused = answer.startswith("Я не знаю")
+        refused = is_refusal(answer)
         expected_terms = test.get("expected_terms", [])
         expected_sources = test.get("expected_sources", [])
         terms_ok = all(term.lower() in answer.lower() for term in expected_terms)
