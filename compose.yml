@@ -1,0 +1,54 @@
+services:
+  indexer:
+    build: .
+    command: ["python", "build_index.py"]
+    volumes:
+      - rag-index:/app/data/index
+      - rag-logs:/app/logs
+
+  rag-api:
+    build: .
+    depends_on:
+      indexer:
+        condition: service_completed_successfully
+    env_file: .env
+    environment:
+      LLM_BASE_URL: http://host.docker.internal:11434/v1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8000:8000"
+    volumes:
+      - rag-index:/app/data/index
+      - rag-logs:/app/logs
+
+  telegram:
+    build: .
+    command: ["python", "telegram_bot.py"]
+    depends_on:
+      indexer:
+        condition: service_completed_successfully
+    env_file: .env
+    environment:
+      LLM_BASE_URL: http://host.docker.internal:11434/v1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    profiles: ["telegram"]
+    volumes:
+      - rag-index:/app/data/index
+      - rag-logs:/app/logs
+
+  scheduler:
+    build: .
+    command: ["cron", "-f"]
+    depends_on:
+      indexer:
+        condition: service_completed_successfully
+    volumes:
+      - rag-index:/app/data/index
+      - rag-logs:/app/logs
+      - ./knowledge_base:/app/knowledge_base:ro
+
+volumes:
+  rag-index:
+  rag-logs:
