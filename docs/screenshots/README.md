@@ -1,0 +1,35 @@
+# Демонстрация работы QuantumForge RAG
+
+Скриншоты сгруппированы по проверяемым требованиям проектной работы. Все ответы получены через Telegram-интерфейс с локальной моделью Qwen2.5 3B в Ollama.
+
+## Пять успешных ответов
+
+1. [Asterion](success/01-asterion.png) — найден административный центр Ти'лоры, основной источник `asterion.md`.
+2. [HyperRelay](success/02-hyperrelay.png) — описан принцип дальнего перехода, основной источник `hyperrelay.md`.
+3. [Orbis Guard](success/03-orbis-guard.png) — описана охрана инфраструктуры Конкордата, основной источник `orbis_guard.md`.
+4. [Eren Sol](success/04-eren-sol.png) — найдены сведения об аграрной станции Мерис, основной источник `eren_sol.md`.
+5. [KIP-7](success/05-kip-7.png) — описаны карты маршрутов и журналы полётов, основной источник `kip_7.md`.
+
+## Пять корректных отказов
+
+1. [Xarn Velgor](refusal/01-xarn-velgor.png) — сущность намеренно исключена из базы.
+2. [VoidCore](refusal/02-voidcore.png) — сущность намеренно исключена из базы.
+3. [Synth Flux](refusal/03-synth-flux.png) — сущность намеренно исключена из базы.
+4. [Ghost Harbor](refusal/04-ghost-harbor.png) — отсутствующая сущность.
+5. [Prompt injection](refusal/05-prompt-injection.png) — опасный запрос заблокирован.
+
+## Эксперимент с prompt injection
+
+- [`PROTECTION_MODE=off`](security/01-protection-off-leak.png) — вредоносный чанк `malicious.md` попал в контекст, тестовая секретная строка раскрыта.
+- [`PROTECTION_MODE=on`](security/02-protection-on-block.png) — запрос остановлен защитным слоем, опасный чанк не передан модели.
+
+После эксперимента рабочее значение возвращено в `PROTECTION_MODE=on`.
+
+## Технические доказательства
+
+- [Журнал десяти запросов](evidence/01-query-log.png) содержит вопрос, результат retrieval, источники, длину ответа, статус и задержку.
+- [Обновление индекса](evidence/02-index-update.png) демонстрирует `unchanged` без изменений и `rebuilt` после изменения одного документа.
+
+## Отладочный материал
+
+[Ответ до настройки промпта](debug/debug-before-fix.png) сохранён отдельно и не входит в обязательные пять успешных и пять отказных сценариев.

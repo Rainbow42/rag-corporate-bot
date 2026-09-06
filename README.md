@@ -2,6 +2,8 @@
 
 Корпоративный RAG-бот для синтетической базы знаний Nebula Forge. Учебный стенд использует multilingual SentenceTransformer, FAISS и локальную Qwen2.5 3B через Ollama. Доступны REST API и Telegram-интерфейс.
 
+Результаты демонстрации, пять успешных ответов, пять корректных отказов, эксперимент с prompt injection и проверка обновления индекса собраны в [`docs/screenshots`](docs/screenshots/README.md). Ответы на все пункты проектной работы приведены в [`Project_template.md`](Project_template.md).
+
 ## Быстрый запуск
 
 ```bash
@@ -57,6 +59,8 @@ python update_index.py
 ```
 
 Перед `evaluate.py` запустите Ollama и скачайте модель `qwen2.5:3b`. Результат сохраняется в `logs/evaluation.json`, каждый запрос — в `logs/queries.jsonl`. Повторный `update_index.py` без изменений должен вернуть статус `unchanged`.
+
+Контрольный прогон golden-набора на локальной модели завершён с результатом `12/12`; модульные тесты — `11 passed`.
 
 ## Настройки LLM
 
