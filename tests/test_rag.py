@@ -8,9 +8,11 @@ from rag_core import Chunk, OllamaLLM, RAGService, SearchResult, looks_malicious
 class FakeStore:
     def __init__(self, results: list[SearchResult]) -> None:
         self.results = results
+        self.top_k = None
 
     def search(self, question: str, top_k: int = 5) -> list[SearchResult]:
-        del question, top_k
+        del question
+        self.top_k = top_k
         return self.results
 
 
@@ -32,10 +34,12 @@ def result(text: str, score: float = 0.8) -> SearchResult:
 
 def test_grounded_answer_is_logged(tmp_path: Path) -> None:
     llm = FakeLLM("Найденные факты: A. Вывод: B")
-    service = RAGService(FakeStore([result("Безопасный подтверждённый факт")]), llm, query_log_path=tmp_path / "queries.jsonl")
+    store = FakeStore([result("Безопасный подтверждённый факт")])
+    service = RAGService(store, llm, query_log_path=tmp_path / "queries.jsonl")
     response = service.ask("Что известно об A?")
     assert response["success"] is True
     assert response["sources"] == ["a.md"]
+    assert store.top_k == 3
     assert llm.calls == 1
     assert (tmp_path / "queries.jsonl").read_text(encoding="utf-8")
 
@@ -53,6 +57,12 @@ def test_low_score_returns_refusal(tmp_path: Path) -> None:
     llm = FakeLLM("must not be returned")
     service = RAGService(FakeStore([result("unrelated", 0.1)]), llm, query_log_path=tmp_path / "queries.jsonl")
     assert service.ask("unknown")["answer"].startswith("Я не знаю")
+
+
+def test_refusal_after_explanation_is_not_marked_successful(tmp_path: Path) -> None:
+    llm = FakeLLM("Найденные факты: подтверждения нет. Вывод: Я не знаю.")
+    service = RAGService(FakeStore([result("Похожий, но недостаточный факт")]), llm, query_log_path=tmp_path / "queries.jsonl")
+    assert service.ask("unknown")["success"] is False
 
 
 def test_render_demo_escapes_model_output() -> None:
