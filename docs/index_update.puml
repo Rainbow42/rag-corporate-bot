@@ -1,0 +1,22 @@
+@startuml
+actor Cron
+database "knowledge_base/" as Source
+component "update_index.py" as Scanner
+component "SHA-256 change detector" as Detector
+component "180-word chunker" as Chunker
+component "SentenceTransformer" as Embedder
+database "FAISS + chunks.json" as Index
+database "manifest.json" as Manifest
+database "index_updates.jsonl" as Log
+
+Cron -> Scanner: daily at 06:00
+Scanner -> Source: scan documents
+Scanner -> Detector: current hashes
+Detector -> Manifest: compare previous hashes
+Detector --> Scanner: added / changed / removed
+Scanner -> Chunker: rebuild when changed
+Chunker -> Embedder: chunk texts
+Embedder -> Index: normalized vectors + metadata
+Scanner -> Manifest: model, hashes, counts
+Scanner -> Log: timing, changes, size, errors
+@enduml

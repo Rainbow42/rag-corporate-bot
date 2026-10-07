@@ -1,0 +1,32 @@
+@startuml
+actor User
+participant "Telegram / API" as UI
+participant Guard
+participant Embedder
+database FAISS
+participant LLM
+participant Evaluator
+database "queries.jsonl" as Log
+
+User -> UI: question
+UI -> Guard: validate question
+alt malicious question
+  Guard --> UI: safe refusal
+else safe question
+  Guard -> Embedder: encode question
+  Embedder -> FAISS: nearest chunks
+  FAISS --> Guard: chunks + scores
+  alt empty index or low relevance
+    Guard --> UI: "I don't know"
+  else malicious retrieved chunk
+    Guard -> Guard: remove chunk
+  else grounded context
+    Guard -> LLM: prompt + context
+    LLM --> Guard: answer
+    Guard --> UI: answer + sources
+  end
+end
+UI -> Log: result, sources, score, latency
+Evaluator -> UI: golden question
+Evaluator -> Log: compare answer and expected data
+@enduml
